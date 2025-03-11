@@ -9,8 +9,7 @@ from kubernetes_client_shell.exceptions import (
 
 def get_configmap(namespace: str, name: str):
     cmd = ["kubectl", "get", "configmap", name, "-n", namespace, "-o", "json"]
-    
-    
+
     try:
         result = subprocess.run(
             cmd,
@@ -31,3 +30,13 @@ def get_configmap(namespace: str, name: str):
         raise CommandExecutionError(
             f"Failed to parse kubectl output: {e}"
         ) from e
+
+
+def get_configmap_data(namespace: str, name: str):
+    configmap = get_configmap(namespace, name)
+    return configmap["data"]
+
+
+def get_configmap_value(namespace: str, name: str, key: str):
+    data = get_configmap_data(namespace, name)
+    return data.get(key)

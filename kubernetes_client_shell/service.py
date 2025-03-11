@@ -7,19 +7,8 @@ from kubernetes_client_shell.exceptions import (
     CommandExecutionError,
 )
 
-
-@dataclass
-class ServiceSpec:
-    clusterIP: str
-
-
-@dataclass
-class Service:
-    spec: ServiceSpec
-
-
-def get_service(namespace: str, name: str) -> Service:
-    cmd = ["kubectl", "get", "configmap", name, "-n", namespace, "-o", "json"]
+def get_service(namespace: str, name: str) -> dict:
+    cmd = ["kubectl", "get", "service", name, "-n", namespace, "-o", "json"]
 
     try:
         result = subprocess.run(
@@ -28,8 +17,7 @@ def get_service(namespace: str, name: str) -> Service:
             text=True,
             check=True
         )
-        data = json.loads(result.stdout)
-        return Service(**data)
+        return json.loads(result.stdout)
     except subprocess.CalledProcessError as e:
         if "NotFound" in e.stderr:
             raise ServiceNotFoundError(
