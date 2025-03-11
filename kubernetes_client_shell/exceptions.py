@@ -11,6 +11,11 @@ class ConfigMapNotFoundError(KubernetesClientError):
     pass
 
 
+class ServiceNotFoundError(KubernetesClientError):
+    """Raised when a service is not found."""
+    pass
+
+
 class CommandExecutionError(KubernetesClientError):
     """Raised when a kubectl command fails to execute."""
     pass
