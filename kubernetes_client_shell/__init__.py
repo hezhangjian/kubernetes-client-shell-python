@@ -4,7 +4,6 @@ from .configmap import (
 
 from .service import ( 
     get_service,
-    Service,  
 )
 
 from .exceptions import (
